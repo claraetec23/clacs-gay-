@@ -1,4 +1,3 @@
-import { getSelecoes } from "../services/selecoes.service.js";
-
-const selecoes = await getSelecoes();
-console.log("Selecoes", selecoes);
+import "../components/navbar/index.js";
+import "../components/footer/index.js";
+import "../pages/selecoes/index.js";

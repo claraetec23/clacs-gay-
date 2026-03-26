@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Seleções</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        img {
+            width: 50px;
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Seleções</h1>
+
+<form id="form">
+    <input id="nome" placeholder="Nome" required />
+    <input id="grupo" placeholder="Grupo" required />
+    <input id="logo" placeholder="Logo URL" required />
+    <button>Salvar</button>
+</form>
+
+<div id="lista"></div>
+
+<script>
+
+const API = `${window.location.protocol}//${window.location.hostname}:3000/selecoes`;
+
+const listaEl = document.getElementById("lista");
+const form = document.getElementById("form");
+
+let editandoId = null;
+
+async function carregar() {
+    try {
+        const res = await fetch(API);
+        const lista = await res.json();
+
+        listaEl.innerHTML = "";
+
+        lista.forEach(s => {
+            listaEl.innerHTML += `
+                <div class="card">
+                    <img src="${s.logo}" />
+                    <b>${s.nome}</b> - ${s.grupo}
+                    <br>
+                    <button onclick="editar(${s.id})">Editar</button>
+                    <button onclick="excluir(${s.id})">Excluir</button>
+                </div>
+            `;
+        });
+
+        // funções globais
+        window.editar = (id) => {
+            const s = lista.find(x => x.id == id);
+
+            document.getElementById("nome").value = s.nome;
+            document.getElementById("grupo").value = s.grupo;
+            document.getElementById("logo").value = s.logo;
+
+            editandoId = id;
+        };
+
+        window.excluir = async (id) => {
+            await fetch(`${API}/${id}`, { method: "DELETE" });
+            carregar();
+        };
+
+    } catch (erro) {
+        listaEl.innerHTML = "<p>Erro ao conectar com a API</p>";
+        console.error(erro);
+    }
+}
+
+
+form.onsubmit = async (e) => {
+    e.preventDefault();
+
+    const data = {
+        nome: document.getElementById("nome").value,
+        grupo: document.getElementById("grupo").value,
+        logo: document.getElementById("logo").value,
+        jogadores: []
+    };
+
+    try {
+        if (editandoId) {
+            await fetch(`${API}/${editandoId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            editandoId = null;
+        } else {
+            await fetch(API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+        }
+
+        form.reset();
+        carregar();
+
+    } catch (erro) {
+        console.error("Erro ao salvar:", erro);
+    }
+};
+
+
+carregar();
+</script>
+
+</body>
+</html>

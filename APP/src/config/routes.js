@@ -1,7 +1,5 @@
-import { baseUrl } from "./env.js";
+import { API_URL } from "./env.js";
 
-const routes = {
-    selecoes: `${baseUrl}/selecoes`
+export const routes = {
+    selecoes: `${API_URL}/selecoes`
 };
-
-export { routes };

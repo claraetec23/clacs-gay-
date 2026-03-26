@@ -1,16 +1,3 @@
 {
-  "selecoes": [
-    {
-      "id": 1,
-      "nome": "Brasil",
-      "grupo": "G",
-      "logo": "https://upload.wikimedia.org/wikipedia/en/0/05/Brazil_national_football_team_logo.svg"
-    },
-    {
-      "id": 2,
-      "nome": "Argentina",
-      "grupo": "C",
-      "logo": "https://upload.wikimedia.org/wikipedia/en/c/c1/Argentina_national_football_team_logo.svg"
-    }
-  ]
+  "selecoes": []
 }
