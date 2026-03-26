@@ -1,1 +1,1 @@
-export const API_URL = "http://localhost:3000";
+export const API_URL = "https://fuzzy-broccoli-v6jgj4r9jg67f69wq-3000.app.github.dev/api";
